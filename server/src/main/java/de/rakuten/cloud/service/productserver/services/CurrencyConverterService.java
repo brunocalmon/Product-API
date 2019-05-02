@@ -1,4 +1,4 @@
-package de.rakuten.cloud.service.productapi.services;
+package de.rakuten.cloud.service.productserver.services;
 
 import java.math.BigDecimal;
 

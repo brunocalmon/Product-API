@@ -1,4 +1,4 @@
-package de.rakuten.cloud.service.productapi.exceptions;
+package de.rakuten.cloud.service.productserver.exceptions;
 
 public class ProductServiceException extends Exception {
 

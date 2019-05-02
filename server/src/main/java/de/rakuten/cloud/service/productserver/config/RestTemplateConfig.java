@@ -1,4 +1,4 @@
-package de.rakuten.cloud.service.productapi.config;
+package de.rakuten.cloud.service.productserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.rakuten.cloud.service.productapi.exceptions.InvalidProductTypeException;
-import de.rakuten.cloud.service.productapi.exceptions.ProductServiceException;
-import de.rakuten.cloud.service.productapi.services.ProductService;
+import de.rakuten.cloud.service.productserver.controllers.BaseController;
 import de.rakuten.cloud.service.productserver.datatransferobjects.ProductRequest;
+import de.rakuten.cloud.service.productserver.exceptions.ProductServiceException;
 import de.rakuten.cloud.service.productserver.mappers.ProductMapper;
+import de.rakuten.cloud.service.productserver.services.ProductService;
 
 @RestController
 @RequestMapping("/api/v1/products")

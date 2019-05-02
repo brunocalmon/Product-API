@@ -1,4 +1,4 @@
-package de.rakuten.cloud.service.productapi.services;
+package de.rakuten.cloud.service.productserver.services;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import de.rakuten.cloud.service.productapi.datatransferobjects.FixerResponse;
 import de.rakuten.cloud.service.productapi.domainobjects.ConvertedAmountDO;
-import de.rakuten.cloud.service.productapi.exceptions.InvalidCurrencyException;
+import de.rakuten.cloud.service.productserver.exceptions.InvalidCurrencyException;
 
 public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 

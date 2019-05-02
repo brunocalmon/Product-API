@@ -1,4 +1,4 @@
-package de.rakuten.cloud.service.productapi.repositories;
+package de.rakuten.cloud.service.productserver.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
