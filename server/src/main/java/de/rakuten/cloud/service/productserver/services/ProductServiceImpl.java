@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public void createProduct(@NotNull final ProductDO productDO) throws ProductServiceException {
-		ConvertedAmountDO convertedAmount = currencyConverterService.getConvertedCurrencyAmount(productDO.getAmount(), productDO.getCurrency());
+		ConvertedAmountDO convertedAmount = currencyConverterService.getConvertedCurrencyAmount(productDO.getCurrency(), productDO.getAmount());
 		
 	}
 }

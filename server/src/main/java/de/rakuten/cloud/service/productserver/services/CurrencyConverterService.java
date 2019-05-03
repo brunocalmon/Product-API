@@ -10,5 +10,5 @@ import de.rakuten.cloud.service.productapi.domainobjects.ConvertedAmountDO;
 
 @Service
 public interface CurrencyConverterService {
-	public ConvertedAmountDO getConvertedCurrencyAmount(@NotNull final BigDecimal amount, @NotNull final String currency);
+	public ConvertedAmountDO getConvertedCurrencyAmount(@NotNull final String currency, @NotNull final BigDecimal amount);
 }
