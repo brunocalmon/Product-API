@@ -50,7 +50,7 @@ public class ProductMapperTest {
 		assertEquals("EUR", createdPersistent.getCurrency());
 		assertEquals("product-test-1", createdPersistent.getName());
 		assertNotNull(createdPersistent.getLastUpdated());
-		assertNull(createdPersistent.getCreatedAt());
+		assertEquals(oldProduct.getCreatedAt(), createdPersistent.getCreatedAt());
 
 	}
 

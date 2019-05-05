@@ -41,6 +41,8 @@ public class SystemIntegrationTest {
 	@Autowired
 	protected ProductService productService;
 	@Autowired
+	protected CategoryService categoryService;
+	@Autowired
 	private ProductRepository productRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
