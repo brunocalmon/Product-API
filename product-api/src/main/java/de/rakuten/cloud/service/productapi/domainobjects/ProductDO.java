@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 public class ProductDO {
 
+	private String id;
 	private String name;
 	private BigDecimal amount;
 	private String currency;
@@ -17,7 +18,7 @@ public class ProductDO {
 	private String categoryId;
 
 	public ProductDO createConvertedProductToEuroCurrency(final ConvertedAmountDO convertedAmount) {
-		return ProductDO.builder().name(this.getName()).amount(convertedAmount.getConvertedAmount())
+		return ProductDO.builder().id(this.id).name(this.getName()).amount(convertedAmount.getConvertedAmount())
 				.currency(convertedAmount.getCurrency()).productType(this.productType).categoryId(this.categoryId)
 				.build();
 	}

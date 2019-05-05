@@ -109,14 +109,15 @@ public class ProductRequestTest {
 		assertEquals(validated.size(), 1);
 	}
 
-	private ProductRequest createProduct(BigDecimal amount, String categoryId, String currency, String name,
-			String productType) {
+	private ProductRequest createProduct(final BigDecimal amount, final String categoryId, final String currency,
+			final String name, final String productType) {
 		ProductRequest productRequest = new ProductRequest();
 		productRequest.setAmount(amount);
 		productRequest.setCategoryId(categoryId);
 		productRequest.setCurrency(currency);
 		productRequest.setName(name);
 		productRequest.setProductType(productType);
+
 		return productRequest;
 	}
 

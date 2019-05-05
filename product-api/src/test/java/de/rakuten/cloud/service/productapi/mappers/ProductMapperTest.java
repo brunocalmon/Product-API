@@ -33,22 +33,24 @@ public class ProductMapperTest {
 		assertEquals("E10", createdPersistent.getCategoryId());
 		assertEquals("EUR", createdPersistent.getCurrency());
 		assertEquals("product-test-1", createdPersistent.getName());
-		assertNotNull(createdPersistent.getCreationDate());
-		assertNull(createdPersistent.getUpdateDate());
+		assertNotNull(createdPersistent.getCreatedAt());
+		assertNull(createdPersistent.getLastUpdated());
 
 	}
 
 	@Test
 	public void test_mapping_product_domain_to_update_persistent() {
 		ProductDO productDO = createProductDO(amount, categoryId, currency, name, virtualType);
-		ProductPersistent createdPersistent = ProductAPIMapper.productDomainToUpdatePersistentMapper(productDO);
+		ProductPersistent oldProduct = ProductAPIMapper.productDomainToCreatePersistentMapper(productDO);
+		ProductPersistent createdPersistent = ProductAPIMapper.productDomainToUpdatePersistentMapper(oldProduct,
+				productDO);
 
 		assertEquals(new BigDecimal("10"), createdPersistent.getAmount());
 		assertEquals("E10", createdPersistent.getCategoryId());
 		assertEquals("EUR", createdPersistent.getCurrency());
 		assertEquals("product-test-1", createdPersistent.getName());
-		assertNotNull(createdPersistent.getUpdateDate());
-		assertNull(createdPersistent.getCreationDate());
+		assertNotNull(createdPersistent.getLastUpdated());
+		assertNull(createdPersistent.getCreatedAt());
 
 	}
 

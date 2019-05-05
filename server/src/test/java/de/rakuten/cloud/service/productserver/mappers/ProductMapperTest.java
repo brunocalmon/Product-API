@@ -70,12 +70,13 @@ public class ProductMapperTest {
 		productRequest.setCurrency(currency);
 		productRequest.setName(name);
 		productRequest.setProductType(productType);
+
 		return productRequest;
 	}
 
 	private ProductPersistent createPersistedProduct(final String id, final Date creationDate, final Date updateDate,
 			final BigDecimal amount, String name, String currency, ProductTypeEnum productType, String categoryId) {
 		return ProductPersistent.builder().amount(amount).categoryId(categoryId).currency(currency).name(name)
-				.productType(productType).id(id).creationDate(creationDate).updateDate(updateDate).build();
+				.productType(productType).id(id).createdAt(creationDate).lastUpdated(updateDate).build();
 	}
 }

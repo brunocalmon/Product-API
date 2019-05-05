@@ -18,22 +18,18 @@ public class ProductServiceApplication {
 	public static void main(final String[] args) {
 		SpringApplication.run(ProductServiceApplication.class, args);
 	}
-	
-    @Bean
-    public Docket docket()
-    {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.basePackage(getClass().getPackage().getName()))
-            .paths(PathSelectors.any())
-            .build()
-            .apiInfo(generateApiInfo());
-    }
-    
-    @SuppressWarnings("deprecation")
-	private ApiInfo generateApiInfo()
-    {
-        return new ApiInfo("Rakuten Exam Product Server", "This service must store and recovery products.", "Version 1.0 - mw",
-            "urn:tos", "brunoxaviercalmon@outlook.com", "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
-    }
+
+	@Bean
+	public Docket docket() {
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage(getClass().getPackage().getName())).paths(PathSelectors.any())
+				.build().apiInfo(generateApiInfo());
+	}
+
+	@SuppressWarnings("deprecation")
+	private ApiInfo generateApiInfo() {
+		return new ApiInfo("Rakuten Exam Product Server", "This service must store and recovery products.",
+				"Version 1.0 - mw", "urn:tos", "brunoxaviercalmon@outlook.com", "Apache 2.0",
+				"http://www.apache.org/licenses/LICENSE-2.0");
+	}
 }

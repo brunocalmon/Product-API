@@ -17,8 +17,8 @@ public class ProductPersistent {
 
 	@Id
 	private String id;
-	private Date creationDate;
-	private Date updateDate;
+	private Date createdAt;
+	private Date lastUpdated;
 	private String name;
 	private BigDecimal amount;
 	private String currency;
