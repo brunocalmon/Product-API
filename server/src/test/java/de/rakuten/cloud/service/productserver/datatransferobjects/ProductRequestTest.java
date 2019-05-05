@@ -20,90 +20,97 @@ import de.rakuten.cloud.service.productserver.categories.UnitTest;
 public class ProductRequestTest {
 
 	private static Validator validator;
-	
+
+	final BigDecimal amount = new BigDecimal(20);
+	final String categoryId = "E10";
+	final String currency = "BRL";
+	final String name = "Action Toy";
+	final String productType = "PHYSICAL";
+
 	@BeforeClass
 	public static void setupValidatorInstance() {
-	    validator = Validation.buildDefaultValidatorFactory().getValidator();
+		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
-	
+
 	@Test
 	public void test_product_request_when_all_valid() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", "BRL", "Action Toy", "PHYSICAL");
+		ProductRequest createValidProduct = createProduct(amount, categoryId, currency, name, productType);
 		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
 		assertTrue(validated.isEmpty());
 	}
-	
+
 	@Test
 	public void test_product_request_when_amount_is_zero() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(0), "E10", "BRL", "Action Toy", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_amount_is_null() {
-		ProductRequest createValidProduct = createProduct(null, "E10", "BRL", "Action Toy", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_category_is_empty() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "", "BRL", "Action Toy", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 0);
-	}
-	
-	@Test
-	public void test_product_request_when_category_is_null() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), null, "BRL", "Action Toy", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 0);
-	}
-	
-	@Test
-	public void test_product_request_when_currency_is_empty() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", "", "Action Toy", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_currency_is_null() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", null, "Action Toy", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_name_is_empty() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", "BRL", "", "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_name_is_null() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", "BRL", null, "PHYSICAL");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_product_type_is_empty() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", "BRL", "Action Toy", "");
-		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
-		assertEquals(validated.size(), 1);
-	}
-	
-	@Test
-	public void test_product_request_when_product_type_is_null() {
-		ProductRequest createValidProduct = createProduct(new BigDecimal(20), "E10", "BRL", "Action Toy", null);
+		ProductRequest createValidProduct = createProduct(new BigDecimal(0), categoryId, currency, name, productType);
 		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
 		assertEquals(validated.size(), 1);
 	}
 
-	private ProductRequest createProduct(BigDecimal amount, String categoryId, String currency, String name, String productType) {
+	@Test
+	public void test_product_request_when_amount_is_null() {
+		ProductRequest createValidProduct = createProduct(null, categoryId, currency, name, productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	@Test
+	public void test_product_request_when_category_is_empty() {
+		ProductRequest createValidProduct = createProduct(amount, "", currency, name, productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 0);
+	}
+
+	@Test
+	public void test_product_request_when_category_is_null() {
+		ProductRequest createValidProduct = createProduct(amount, null, currency, name, productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 0);
+	}
+
+	@Test
+	public void test_product_request_when_currency_is_empty() {
+		ProductRequest createValidProduct = createProduct(amount, categoryId, "", name, productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	@Test
+	public void test_product_request_when_currency_is_null() {
+		ProductRequest createValidProduct = createProduct(amount, categoryId, null, name, productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	@Test
+	public void test_product_request_when_name_is_empty() {
+		ProductRequest createValidProduct = createProduct(amount, categoryId, currency, "", productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	@Test
+	public void test_product_request_when_name_is_null() {
+		ProductRequest createValidProduct = createProduct(amount, categoryId, currency, null, productType);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	@Test
+	public void test_product_request_when_product_type_is_empty() {
+		ProductRequest createValidProduct = createProduct(amount, categoryId, currency, name, "");
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	@Test
+	public void test_product_request_when_product_type_is_null() {
+		ProductRequest createValidProduct = createProduct(amount, categoryId, currency, name, null);
+		Set<ConstraintViolation<ProductRequest>> validated = validator.validate(createValidProduct);
+		assertEquals(validated.size(), 1);
+	}
+
+	private ProductRequest createProduct(BigDecimal amount, String categoryId, String currency, String name,
+			String productType) {
 		ProductRequest productRequest = new ProductRequest();
 		productRequest.setAmount(amount);
 		productRequest.setCategoryId(categoryId);

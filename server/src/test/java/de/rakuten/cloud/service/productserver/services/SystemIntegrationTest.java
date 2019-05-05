@@ -22,10 +22,12 @@ public class SystemIntegrationTest {
 
 	@Autowired
 	protected CurrencyConverterService currencyConverterService;
+	@Autowired
+	protected ProductService productService;
 
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.options()
-			.withRootDirectory("src/test/resources/wiremock").port(8089));
+	public WireMockRule wireMockRule = new WireMockRule(
+			WireMockConfiguration.options().withRootDirectory("src/test/resources/wiremock").port(8089));
 
 	@Test
 	public void contextLoad() {

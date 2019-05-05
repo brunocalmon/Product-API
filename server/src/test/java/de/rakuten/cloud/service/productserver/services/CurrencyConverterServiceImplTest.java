@@ -30,9 +30,9 @@ public class CurrencyConverterServiceImplTest extends SystemIntegrationTest {
 	}
 
 	@Test
-	public void test_convertion_BRL_to_EUR_responding_a_datailed_response()
+	public void test_convertion_BRL_to_EUR_responding_a_detailed_response()
 			throws InvalidCurrencyException, HttpResponseException {
-		ConvertedAmountDO convertedCurrencyAmount = currencyConverterService.getConvertedCurrencyAmount("BRL",
+		final ConvertedAmountDO convertedCurrencyAmount = currencyConverterService.getConvertedCurrencyAmount("BRL",
 				new BigDecimal("25"));
 
 		assertNotNull(convertedCurrencyAmount);

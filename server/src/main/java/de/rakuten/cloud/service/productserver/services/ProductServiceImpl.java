@@ -28,15 +28,26 @@ public class ProductServiceImpl implements ProductService {
 	public ProductResponse createProduct(@NotNull final ProductDO productDO)
 			throws ProductServiceException, InvalidCurrencyException, InvalidCategoryException {
 		checkCategory(productDO.getCategoryId());
-		final ConvertedAmountDO convertedAmount = currencyConverterService
-				.getConvertedCurrencyAmount(productDO.getCurrency(), productDO.getAmount());
-		final ProductDO convertedProduct = productDO.createConvertedProductToEuroCurrency(convertedAmount);
+		final ProductDO convertedProduct = getConvertedProductAmount(productDO);
 
 		@NotNull
 		final ProductPersistent productPersistent = productRepository
 				.save(ProductAPIMapper.productDomainToCreatePersistentMapper(convertedProduct));
-		
 		return ProductServerMapper.productPersistentToResponse(productPersistent);
+	}
+
+	private ProductDO getConvertedProductAmount(final ProductDO productDO) throws InvalidCurrencyException {
+		if (isEURCurrency(productDO.getCurrency())) {
+			return productDO;
+		} else {
+			final ConvertedAmountDO convertedAmount = currencyConverterService
+					.getConvertedCurrencyAmount(productDO.getCurrency(), productDO.getAmount());
+			return productDO.createConvertedProductToEuroCurrency(convertedAmount);
+		}
+	}
+
+	private boolean isEURCurrency(final String currency) {
+		return "EUR".equalsIgnoreCase(currency.trim());
 	}
 
 	private void checkCategory(final String categoryId) throws InvalidCategoryException {
