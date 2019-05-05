@@ -1,6 +1,5 @@
 package de.rakuten.cloud.service.productserver.services;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 @RunWith(SpringRunner.class)
@@ -25,13 +24,8 @@ public class SystemIntegrationTest {
 	protected CurrencyConverterService currencyConverterService;
 
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(8089);
-
-	@Before
-	public void setUp() {
-		WireMock.stubFor(WireMock.get(WireMock.urlEqualTo(String.format(apiPath, "BRL_EUR")))
-				.willReturn(WireMock.aResponse().withStatus(200).withBody("{\"BRL_EUR\":0.225551}")));
-	}
+	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.options()
+			.withRootDirectory("src/test/resources/wiremock").port(8089));
 
 	@Test
 	public void contextLoad() {

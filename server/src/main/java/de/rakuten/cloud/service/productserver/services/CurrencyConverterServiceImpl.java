@@ -1,18 +1,18 @@
 package de.rakuten.cloud.service.productserver.services;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.common.base.Splitter;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.rakuten.cloud.service.productapi.domainobjects.ConvertedAmountDO;
 import de.rakuten.cloud.service.productserver.exceptions.InvalidCurrencyException;
@@ -31,38 +31,52 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 	}
 
 	@Override
-	public ConvertedAmountDO getConvertedCurrencyAmount(final String currency, final BigDecimal amount) {
+	public ConvertedAmountDO getConvertedCurrencyAmount(final String currency, final BigDecimal amount)
+			throws InvalidCurrencyException {
 		try {
-
 			final String currencyPattern = buildConvertQuery(currency);
-			final ResponseEntity<String> currResponse = getConvertCurrencyApi(currencyPattern);
-			if (isSucceeded(currResponse)) {
-				final BigDecimal quotation = getQuotation(currencyPattern, currResponse.getBody());
-				return ConvertedAmountDO.builder().originalCurrency(currency).originalAmount(amount)
-						.quotation(quotation).build();
-			}
-			throw new InvalidCurrencyException("Invalid currency: " + currency);
+			final String currResponse = getConvertCurrencyApi(currencyPattern);
+			final BigDecimal quotation = getQuotation(currencyPattern, currResponse);
+			return ConvertedAmountDO.builder().originalCurrency(currency).originalAmount(amount).quotation(quotation)
+					.build();
+		} catch (InvalidCurrencyException ice) {
+			throw new InvalidCurrencyException("Invalid currency: " + currency, ice);
+		} catch (HttpClientErrorException hcee) {
+			throw new HttpClientErrorException(hcee.getStatusCode(),
+					"Erro while trying to access currency API: " + hcee.getMessage());
+		} catch (HttpServerErrorException esee) {
+			throw new HttpServerErrorException(esee.getStatusCode(),
+					"Erro while trying to access currency API: " + esee.getMessage());
 		} catch (Exception e) {
-			throw new HttpServerErrorException(HttpStatus.BAD_GATEWAY, "Erro while trying to access currency API");
+			throw new RuntimeException("Unkown error has occuried: " + e.getMessage());
 		}
 	}
 
-	private BigDecimal getQuotation(final String currencyPattern, String currResponse) {
-		Map<String, String> properties = Splitter.on(",").withKeyValueSeparator(":").split(currResponse);
-		return new BigDecimal(properties.get(currencyPattern));
+	private BigDecimal getQuotation(final String currencyPattern, final String currResponse)
+			throws InvalidCurrencyException {
+		return new BigDecimal(extractValue(currencyPattern, currResponse));
+	}
+
+	private String extractValue(final String currencyPattern, final String currResponse)
+			throws InvalidCurrencyException {
+		try {
+			final JsonNode json = new ObjectMapper().readTree(currResponse);
+
+			if (null != json.get(currencyPattern)) {
+				return json.get(currencyPattern).asText();
+			}
+			throw new InvalidCurrencyException("Invalid currency convertion: " + currencyPattern);
+		} catch (IOException e) {
+			throw new InvalidCurrencyException("Invalid currency convertion: " + currencyPattern, e);
+		}
 	}
 
 	private String buildConvertQuery(final String currency) {
 		return currency + "_EUR";
 	}
 
-	private ResponseEntity<String> getConvertCurrencyApi(final String currencyPattern) {
-		return restTemplate.getForEntity(buildUri(currencyPattern), String.class);
-	}
-
-	private boolean isSucceeded(final ResponseEntity<String> currResponse) {
-		return null != currResponse && currResponse.getStatusCode().equals(HttpStatus.ACCEPTED)
-				&& currResponse.hasBody();
+	private String getConvertCurrencyApi(final String currencyPattern) {
+		return restTemplate.getForObject(buildUri(currencyPattern), String.class);
 	}
 
 	private URI buildUri(final String currencyPattern) {

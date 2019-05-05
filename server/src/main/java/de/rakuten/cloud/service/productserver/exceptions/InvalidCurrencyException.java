@@ -10,4 +10,8 @@ public class InvalidCurrencyException extends Exception {
 	public InvalidCurrencyException (final String message, final Throwable throwable) {
 		super(message, throwable);
 	}
+
+	public InvalidCurrencyException() {
+		super();
+	}
 }
