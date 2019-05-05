@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import de.rakuten.cloud.service.productapi.exceptions.InvalidProductTypeException;
 import de.rakuten.cloud.service.productserver.categories.IntegrationTest;
 import de.rakuten.cloud.service.productserver.datatransferobjects.ProductResponse;
+import de.rakuten.cloud.service.productserver.exceptions.CategoryNotFoundException;
 import de.rakuten.cloud.service.productserver.exceptions.InvalidCategoryException;
 import de.rakuten.cloud.service.productserver.exceptions.InvalidCurrencyException;
 import de.rakuten.cloud.service.productserver.exceptions.ProductNotFoundException;
@@ -199,5 +200,29 @@ public class ProductServiceImplTest extends SystemIntegrationTest {
 		} finally {
 			deleteProduct(productResponse.getId());
 		}
+	}
+
+	@Test(expected = ProductNotFoundException.class)
+	public void test_delete_product() throws ProductServiceException, InvalidCurrencyException,
+			InvalidCategoryException, InvalidProductTypeException, ProductNotFoundException {
+		final ProductResponse productResponse = productService
+				.createProduct(createProduct(amount, categoryId, currency, name, productType));
+
+		productService.deleteProductById(productResponse.getId());
+		productService.deleteProductById(productResponse.getId());
+	}
+
+	@Test(expected = ProductNotFoundException.class)
+	public void test_delete_product_category() throws ProductServiceException, InvalidCurrencyException,
+			InvalidCategoryException, InvalidProductTypeException, ProductNotFoundException, CategoryNotFoundException {
+		final ProductResponse productResponse = productService
+				.createProduct(createProduct(amount, categoryId, currency, name, productType));
+
+		assertEquals("E10", productResponse.getCategoryId());
+
+		productService.deleteProductCategory(productResponse.getCategoryId());
+		ProductResponse productWithoutCategory = productService.findProductById(productResponse.getCategoryId());
+
+		assertNull(productWithoutCategory.getCategoryId());
 	}
 }
